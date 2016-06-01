@@ -60,13 +60,18 @@ public class BigramCount {
 				counter.put(word, c+1);
 				total++;
 			}
-			output.collect(new Text(baseWord + " *"), new Text(String.valueOf(total)));
+			word1.set(baseWord + " *");
+			word2.set(String.valueOf(total));
+			output.collect(word1, word2);
 			Iterator it = counter.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, Integer> pair = (Map.Entry)it.next();
 				String w = pair.getKey();
 				Integer c = pair.getValue();
-				output.collect(new Text(baseWord + " " + w), new Text(String.valueOf(c / total)));
+				//output.collect(new Text(baseWord + " " + w), new Text(String.valueOf(c / total)));
+				word1.set(baseWord + " " + w);
+				word2.set(String.valueOf(c / total));
+				output.collect(word1, word2);
 			}
 		}
 	}
