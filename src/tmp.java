@@ -6,9 +6,10 @@ import java.util.Arrays;
 public class tmp {
 
 	public static void main(String[] args) throws Exception {
-		String line = "asd, dsa: dsa i asd cięciwa";
+		String line = ";  asd,   dsa: dsa i asd cięciwa";
 		//StringTokenizer itr = new StringTokenizer(line);
-		String[] words = line.split("[^\\p{L}]+");
+		line = line.replaceAll("[^\\p{L}]+", " ").trim();
+		String[] words = line.split(" ");
 		System.out.println(Arrays.asList(words));
 	}
 }

@@ -24,7 +24,8 @@ public class CharacterCount {
     public void map(LongWritable key, Text value, 
         OutputCollector<Text, IntWritable> output,
         Reporter reporter) throws IOException {
-        String line = value.toString();
+        String line = value.toString().trim();
+
 
         for(char ch : line.toCharArray()) {
           word.set(String.valueOf(ch));

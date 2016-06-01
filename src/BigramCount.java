@@ -28,7 +28,8 @@ public class BigramCount {
 						Reporter reporter) throws IOException {
 
 			String line = text.toString();
-			String[] words = line.split("[^\\p{L}]+");
+			line = line.replaceAll("[^\\p{L}]+", " ").trim();
+			String[] words = line.split(" ");
 
 			for (int i = 0; i < words.length - 1; i++) {
 				word1.set(words[i]);
@@ -48,7 +49,9 @@ public class BigramCount {
 		public void reduce(Text key, Iterator<Text> values,
 						   OutputCollector<Text, Text> output,
 						   Reporter reporter) throws IOException {
+
 			String baseWord = key.toString();
+
 			float total = 0;
 			Map <String, Integer> counter = new HashMap<String, Integer>();
 			while (values.hasNext()) {
@@ -60,16 +63,19 @@ public class BigramCount {
 				counter.put(word, c+1);
 				total++;
 			}
+			//System.out.println(baseWord + "total");
 			word1.set(baseWord + " *");
 			word2.set(String.valueOf(total));
 			output.collect(word1, word2);
+
 			Iterator it = counter.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, Integer> pair = (Map.Entry)it.next();
 				String w = pair.getKey();
 				Integer c = pair.getValue();
 				//output.collect(new Text(baseWord + " " + w), new Text(String.valueOf(c / total)));
-				word1.set(baseWord + " " + w);
+
+				word1.set(baseWord + "_" + w);
 				word2.set(String.valueOf(c / total));
 				output.collect(word1, word2);
 			}
@@ -94,7 +100,7 @@ public class BigramCount {
 		job.setMapperClass(MapClass.class);
 		job.setReducerClass(Reduce.class);
 		// FIXME: can we use reduce as combiner?
-		job.setCombinerClass(Reduce.class);
+		//job.setCombinerClass(Reduce.class);
 
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
