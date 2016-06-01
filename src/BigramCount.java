@@ -1,13 +1,13 @@
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.*;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Template for the second excercise in mimuw - hadoop labs
@@ -20,7 +20,6 @@ public class BigramCount {
 			implements Mapper<LongWritable, Text, Text, Text> {
 		// FIXME: maybe change the map output value class
 
-		private final static IntWritable one = new IntWritable(1);
 		private Text word1 = new Text();
 		private Text word2 = new Text();
 
@@ -79,9 +78,9 @@ public class BigramCount {
 
 		// FIXME: check/set the classes for map/reduce output
 		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(IntWritable.class);
+		job.setMapOutputValueClass(Text.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(Text.class);
 		job.setOutputFormat(TextOutputFormat.class);
 
 		job.setInputFormat(TextInputFormat.class);
