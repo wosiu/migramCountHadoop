@@ -28,7 +28,7 @@ public class BigramCount {
 						Reporter reporter) throws IOException {
 
 			String line = text.toString();
-			String[] words = line.split("[^\\p{Alnum}]+");
+			String[] words = line.split("[^\\p{L}]+");
 
 			for (int i = 0; i < words.length - 1; i++) {
 				word1.set(words[i]);
@@ -58,6 +58,7 @@ public class BigramCount {
 					c = 0;
 				}
 				counter.put(word, c+1);
+				total++;
 			}
 			output.collect(new Text(baseWord + " *"), new Text(String.valueOf(total)));
 			Iterator it = counter.entrySet().iterator();
